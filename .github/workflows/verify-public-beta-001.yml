@@ -1,0 +1,38 @@
+name: VERIFY-PUBLIC-BETA-001
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-public-beta-001.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-public-download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download release asset without GitHub authentication
+        run: |
+          set -euo pipefail
+          url="https://github.com/zsefv945-commits/breakdown-beta-releases/releases/download/v0.1.0-beta.1/BreakDown_BETA_001.zip"
+          curl -fL "$url" -o BreakDown_BETA_001.zip
+
+      - name: Verify downloaded package identity
+        run: |
+          set -euo pipefail
+          expected="a7106eb8a141a7af16c6084ee3424b7935b88c08a55428c7828679f6842973c6"
+          actual="$(sha256sum BreakDown_BETA_001.zip | cut -d ' ' -f1)"
+          echo "expected=$expected"
+          echo "actual=$actual"
+          test "$actual" = "$expected"
+          unzip -l BreakDown_BETA_001.zip | grep -F "START_BETA.bat"
+          unzip -l BreakDown_BETA_001.zip | grep -F "runtime/node.exe"
+          test "$(basename BreakDown_BETA_001.zip)" = "BreakDown_BETA_001.zip"
+
+      - name: Record verification
+        run: |
+          echo "PUBLIC_DOWNLOAD=PASS"
+          echo "PACKAGE_SHA256=a7106eb8a141a7af16c6084ee3424b7935b88c08a55428c7828679f6842973c6"
