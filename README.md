@@ -8,6 +8,13 @@ BreakDown(중간관리자)의 **Windows x64 공개 베타 배포 전용 저장�
 
 ## Current beta
 
+## 공개 다운로드
+
+- Release: https://github.com/zsefv945-commits/breakdown-beta-releases/releases/tag/v0.1.0-beta.1
+- Windows ZIP: https://github.com/zsefv945-commits/breakdown-beta-releases/releases/download/v0.1.0-beta.1/BreakDown_BETA_001.zip
+- SHA-256: `a7106eb8a141a7af16c6084ee3424b7935b88c08a55428c7828679f6842973c6`
+
+
 - Version: `v0.1.0-beta.1`
 - Platform: Windows x64
 - Distribution: portable ZIP
