@@ -1,0 +1,71 @@
+name: PUBLIC-BETA-LANDING-001
+
+on:
+  push:
+    branches:
+      - landing/public-beta-001
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: public-beta-landing
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Static content checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f index.html
+          test -f styles.css
+          grep -F '<meta name="viewport"' index.html
+          grep -F 'BreakDown' index.html
+          grep -F 'Windows Beta 다운로드' index.html
+          grep -F 'Cloud AI OFF' index.html
+          grep -F '외부 업무 자동 실행 없음' index.html
+          grep -F 'START_BETA.bat' index.html
+          grep -F '합성 또는 비식별 데이터' index.html
+          grep -F 'a7106eb8a141a7af16c6084ee3424b7935b88c08a55428c7828679f6842973c6' index.html
+          ! grep -F 'breakdown-middle-manager' index.html
+          ! grep -E '(api[_-]?key|secret|token)[[:space:]]*[:=]' index.html styles.css
+
+      - name: Validate public links
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fLIsS --retry 3 --max-time 30             "https://github.com/zsefv945-commits/breakdown-beta-releases/releases/tag/v0.1.0-beta.1" >/dev/null
+          curl -fLIsS --retry 3 --max-time 30             "https://github.com/zsefv945-commits/breakdown-beta-releases/releases/download/v0.1.0-beta.1/BreakDown_BETA_001.zip" >/dev/null
+          curl -fLIsS --retry 3 --max-time 30             "https://github.com/zsefv945-commits/breakdown-beta-releases/issues" >/dev/null
+
+      - name: Basic responsive safeguards
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -F '@media (max-width:800px)' styles.css
+          grep -F '@media (max-width:520px)' styles.css
+          grep -F 'overflow-wrap:anywhere' styles.css
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
