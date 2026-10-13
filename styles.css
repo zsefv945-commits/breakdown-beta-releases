@@ -25,6 +25,9 @@ a{color:inherit}
 nav{display:flex;gap:22px}
 nav a{font-size:14px;text-decoration:none;color:var(--muted)}
 nav a:hover,nav a:focus{color:var(--ink)}
+.language-switch{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);white-space:nowrap}
+.language-switch strong{color:var(--ink);font-weight:800}
+.language-switch a{font-size:13px}
 .hero{padding:92px 0 78px}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr);gap:70px;align-items:center}
 .eyebrow{text-transform:uppercase;letter-spacing:.11em;font-size:12px;font-weight:800;color:var(--accent);margin:0 0 12px}
