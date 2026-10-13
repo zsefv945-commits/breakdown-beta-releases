@@ -55,6 +55,15 @@ jobs:
           curl -fLIsS --retry 3 --max-time 30             "https://github.com/zsefv945-commits/breakdown-beta-releases/releases/download/v0.1.0-beta.1/BreakDown_BETA_001.zip" >/dev/null
           curl -fLIsS --retry 3 --max-time 30             "https://github.com/zsefv945-commits/breakdown-beta-releases/issues" >/dev/null
 
+      - name: Verify approved ZIP identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --max-time 120             "https://github.com/zsefv945-commits/breakdown-beta-releases/releases/download/v0.1.0-beta.1/BreakDown_BETA_001.zip"             -o /tmp/BreakDown_BETA_001.zip
+          expected="a7106eb8a141a7af16c6084ee3424b7935b88c08a55428c7828679f6842973c6"
+          actual="$(sha256sum /tmp/BreakDown_BETA_001.zip | cut -d ' ' -f1)"
+          test "$actual" = "$expected"
+
       - name: Basic responsive safeguards
         shell: bash
         run: |
