@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BreakDown Beta — 모호한 업무지시를 실행 가능한 초안으로</title>
+  <meta name="description" content="BreakDown은 '이거 해줘' 같은 모호한 업무지시를 누가, 무엇을, 언제 할지로 정리하고 모르는 정보는 다시 확인하는 Windows 로컬 베타입니다.">
+  <meta property="og:title" content="BreakDown Beta">
+  <meta property="og:description" content="'이거 해줘'를, 누가 무엇을 언제 할지로 바꿉니다. Windows x64 공개 베타.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://zsefv945-commits.github.io/breakdown-beta-releases/">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="BreakDown 홈">BreakDown <span>BETA</span></a>
+      <nav aria-label="주요 메뉴">
+        <a href="#example">사용 예시</a>
+        <a href="#download">다운로드</a>
+        <a href="#limits">제한사항</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Windows x64 Public Beta</p>
+          <h1>“‘이거 해줘’를,<br>누가 무엇을 언제 할지로 바꿉니다.”</h1>
+          <p class="lead">애매한 업무지시를 실행 가능한 업무 초안으로 정리하고, 모르는 담당자·기한·산출물은 임의로 채우지 않고 다시 확인합니다.</p>
+          <div class="cta-row">
+            <a class="button primary" href="https://github.com/zsefv945-commits/breakdown-beta-releases/releases/download/v0.1.0-beta.1/BreakDown_BETA_001.zip">Windows Beta 다운로드</a>
+            <a class="button secondary" href="https://github.com/zsefv945-commits/breakdown-beta-releases/releases/tag/v0.1.0-beta.1">Release 보기</a>
+          </div>
+          <p class="micro">파일: <strong>BreakDown_BETA_001.zip</strong> · Node.js, Git, Docker 별도 설치 불필요</p>
+        </div>
+
+        <aside class="promise-card" aria-label="BreakDown이 하는 일">
+          <p class="card-label">BreakDown의 현재 역할</p>
+          <ol>
+            <li>모호한 업무지시 입력</li>
+            <li>회사 맥락 참고</li>
+            <li>업무 초안 생성</li>
+            <li>누가 / 무엇 / 언제 구조화</li>
+            <li>모르는 정보는 UNKNOWN으로 확인</li>
+            <li>사용자가 수정</li>
+            <li>사용자가 최종 확정</li>
+          </ol>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="example">
+      <div class="wrap narrow">
+        <p class="eyebrow">실제 사용 예시</p>
+        <h2>모호함을 숨기지 않고, 필요한 것을 다시 묻습니다.</h2>
+        <div class="example-flow">
+          <div class="example-card">
+            <span class="step">원래 지시</span>
+            <blockquote>“이번 주 안으로 거래처 자료 정리해서 보내줘.”</blockquote>
+          </div>
+          <div class="arrow" aria-hidden="true">↓</div>
+          <div class="example-card emphasis">
+            <span class="step">BreakDown이 확인</span>
+            <ul>
+              <li><strong>담당자:</strong> 근거가 없으면 UNKNOWN</li>
+              <li><strong>업무:</strong> 어떤 거래처의 어떤 자료인지 확인</li>
+              <li><strong>기한:</strong> “이번 주 안”의 정확한 시각 확인</li>
+              <li><strong>전달 대상:</strong> 누구에게 보내는지 확인</li>
+            </ul>
+          </div>
+          <div class="arrow" aria-hidden="true">↓</div>
+          <div class="example-card">
+            <span class="step">사용자 확정</span>
+            <p>확인된 정보만 반영해 담당자·업무·기한·산출물이 보이는 최종 업무 초안으로 정리합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section muted" id="download">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Download</p>
+            <h2>Windows Beta 시작하기</h2>
+          </div>
+          <a class="button primary" href="https://github.com/zsefv945-commits/breakdown-beta-releases/releases/download/v0.1.0-beta.1/BreakDown_BETA_001.zip">BreakDown_BETA_001.zip</a>
+        </div>
+
+        <div class="steps">
+          <article><span>1</span><h3>다운로드</h3><p>Windows용 ZIP 파일을 받습니다.</p></article>
+          <article><span>2</span><h3>압축 해제</h3><p>원하는 새 폴더에 전체 압축을 풉니다.</p></article>
+          <article><span>3</span><h3>실행</h3><p>루트의 <code>START_BETA.bat</code>을 실행합니다.</p></article>
+          <article><span>4</span><h3>브라우저 사용</h3><p>브라우저가 열리면 안내에 따라 시작합니다.</p></article>
+        </div>
+
+        <div class="integrity">
+          <strong>승인 SHA-256</strong>
+          <code>a7106eb8a141a7af16c6084ee3424b7935b88c08a55428c7828679f6842973c6</code>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="limits">
+      <div class="wrap two-col">
+        <div>
+          <p class="eyebrow">Beta limits</p>
+          <h2>현재 지원 범위</h2>
+          <ul class="check-list">
+            <li>Windows x64 전용</li>
+            <li>Beta 단계</li>
+            <li>Cloud AI OFF</li>
+            <li>외부 업무 자동 실행 없음</li>
+            <li>installer 없음</li>
+            <li>code signing 없음</li>
+            <li>자동 업데이트 없음</li>
+            <li>Mac / Linux / 모바일 미지원</li>
+          </ul>
+        </div>
+
+        <div class="notice">
+          <p class="eyebrow">개인정보 · 회사정보</p>
+          <h2>첫 사용은 비식별 데이터로</h2>
+          <p>초기 공개 Beta에서는 실제 회사 기밀이나 민감한 개인정보보다 <strong>합성 또는 비식별 데이터</strong>를 먼저 사용해 주세요.</p>
+          <p>현재 배포본은 Cloud AI가 꺼진 상태이지만, 이것이 모든 보안 위험이 없다는 의미는 아닙니다. 중요한 결과와 입력 정보는 직접 확인해 주세요.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section feedback" id="feedback">
+      <div class="wrap narrow center">
+        <p class="eyebrow">Feedback</p>
+        <h2>막히는 지점을 알려주세요.</h2>
+        <p>실행 실패, 저장·복원 문제, UNKNOWN 처리 문제, 사용성 불편, 기능 요청을 공개 Issues에 남길 수 있습니다.</p>
+        <a class="button secondary light" href="https://github.com/zsefv945-commits/breakdown-beta-releases/issues">GitHub Issues에 피드백 남기기</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-row">
+      <p><strong>BreakDown Beta</strong> · 정식 상용제품이 아닙니다.</p>
+      <a href="https://github.com/zsefv945-commits/breakdown-beta-releases/releases/tag/v0.1.0-beta.1">v0.1.0-beta.1</a>
+    </div>
+  </footer>
+</body>
+</html>
