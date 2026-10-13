@@ -56,6 +56,8 @@ jobs:
           grep -F 'overflow-wrap:anywhere' styles.css
 
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
