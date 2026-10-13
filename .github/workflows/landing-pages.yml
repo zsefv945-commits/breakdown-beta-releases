@@ -90,3 +90,26 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+
+  verify-live:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Verify Korean and English Pages publicly
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://zsefv945-commits.github.io/breakdown-beta-releases"
+          for i in $(seq 1 12); do
+            if curl -fLsS --max-time 20 "$base/" -o /tmp/ko.html &&                curl -fLsS --max-time 20 "$base/en/" -o /tmp/en.html; then
+              break
+            fi
+            sleep 5
+          done
+          grep -F 'Windows Beta 다운로드' /tmp/ko.html
+          grep -F 'href="./en/"' /tmp/ko.html
+          grep -F 'Turn vague work requests into clear tasks:' /tmp/en.html
+          grep -F 'Application UI is currently Korean-first' /tmp/en.html
+          grep -F 'href="../"' /tmp/en.html
+          grep -F 'BreakDown_BETA_001.zip' /tmp/en.html
