@@ -27,6 +27,7 @@ jobs:
         run: |
           set -euo pipefail
           test -f index.html
+          test -f en/index.html
           test -f styles.css
           grep -F '<meta name="viewport"' index.html
           grep -F 'BreakDown' index.html
@@ -36,8 +37,15 @@ jobs:
           grep -F 'START_BETA.bat' index.html
           grep -F '합성 또는 비식별 데이터' index.html
           grep -F 'a7106eb8a141a7af16c6084ee3424b7935b88c08a55428c7828679f6842973c6' index.html
-          ! grep -F 'breakdown-middle-manager' index.html
-          ! grep -E '(api[_-]?key|secret|token)[[:space:]]*[:=]' index.html styles.css
+          grep -F 'hreflang="en"' index.html
+          grep -F 'hreflang="ko"' en/index.html
+          grep -F 'Turn vague work requests into clear tasks: who does what, and by when.' en/index.html
+          grep -F 'Application UI is currently Korean-first' en/index.html
+          grep -F 'Download Windows Beta' en/index.html
+          grep -F 'START_BETA.bat' en/index.html
+          grep -F 'a7106eb8a141a7af16c6084ee3424b7935b88c08a55428c7828679f6842973c6' en/index.html
+          ! grep -F 'breakdown-middle-manager' index.html en/index.html
+          ! grep -E '(api[_-]?key|secret|token)[[:space:]]*[:=]' index.html en/index.html styles.css
 
       - name: Validate public links
         shell: bash
@@ -54,6 +62,7 @@ jobs:
           grep -F '@media (max-width:800px)' styles.css
           grep -F '@media (max-width:520px)' styles.css
           grep -F 'overflow-wrap:anywhere' styles.css
+          grep -F '.mobile-language{display:inline-flex}' styles.css
 
       - uses: actions/configure-pages@v5
         with:
