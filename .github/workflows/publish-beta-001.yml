@@ -1,80 +1,70 @@
-# trigger-2
 name: PUBLIC-BETA-PUBLISH-001
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/publish-beta-001.yml"
+    branches: [main]
 
 permissions:
   contents: write
 
 jobs:
   publish:
-    if: github.event.head_commit.message == 'PUBLIC-BETA-PUBLISH-001: publish approved release'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download exact approved artifact
-        shell: bash
+      - name: Fetch approved package artifact
+        env:
+          SOURCE_URL: "https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-bd60-8206-8bcf-080854327ac7/raw?se=2026-10-13T04%3A51%3A35Z&sp=r&sv=2026-02-06&sr=b&scid=e0feaa31-9265-5489-a1da-068a5636a99f&skoid=3e273c3d-5ea1-4088-9e18-79685531b184&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-13T00%3A34%3A45Z&ske=2026-10-14T00%3A34%3A45Z&sks=b&skv=2026-02-06&sig=K425acA%2Brx/r76WuxeiRfjQr2gZTiRfuWSnSQTFYpK0%3D"
         run: |
           set -euo pipefail
-          curl -fL 'https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-bd60-8206-8bcf-080854327ac7/raw?se=2026-10-13T04%3A51%3A35Z&sp=r&sv=2026-02-06&sr=b&scid=e0feaa31-9265-5489-a1da-068a5636a99f&skoid=3e273c3d-5ea1-4088-9e18-79685531b184&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-13T00%3A34%3A45Z&ske=2026-10-14T00%3A34%3A45Z&sks=b&skv=2026-02-06&sig=K425acA%2Brx/r76WuxeiRfjQr2gZTiRfuWSnSQTFYpK0%3D' -o approved-artifact.zip
+          curl -fL "$SOURCE_URL" -o approved-artifact.zip
+          mkdir approved
           unzip -q approved-artifact.zip -d approved
           test -f approved/BreakDown_BETA_001.zip
           test -f approved/SHA256SUMS.txt
 
-      - name: Verify approved package identity
-        shell: bash
+      - name: Verify package SHA and minimum contents
         run: |
           set -euo pipefail
-          cd approved
           expected="a7106eb8a141a7af16c6084ee3424b7935b88c08a55428c7828679f6842973c6"
-          actual="$(sha256sum BreakDown_BETA_001.zip | awk '{print $1}')"
+          actual="$(sha256sum approved/BreakDown_BETA_001.zip | cut -d ' ' -f1)"
+          echo "expected=$expected"
+          echo "actual=$actual"
           test "$actual" = "$expected"
-          grep -F "$expected  BreakDown_BETA_001.zip" SHA256SUMS.txt
-          unzip -l BreakDown_BETA_001.zip | grep -F "START_BETA.bat"
-          unzip -l BreakDown_BETA_001.zip | grep -F "runtime/node.exe"
+          grep -F "$expected  BreakDown_BETA_001.zip" approved/SHA256SUMS.txt
+          unzip -l approved/BreakDown_BETA_001.zip | grep -F "START_BETA.bat"
+          unzip -l approved/BreakDown_BETA_001.zip | grep -F "runtime/node.exe"
 
-      - name: Write release notes
-        shell: bash
+      - name: Create release notes
         run: |
           cat > release-notes.md <<'EOF'
           ## BreakDown Beta
 
-          “‘이거 해줘’를, 누가 무엇을 언제 할지로 바꾸는” Windows 로컬 베타입니다.
+          "'이거 해줘'를, 누가 무엇을 언제 할지로 바꾸는" Windows 로컬 베타입니다.
 
           - Windows x64
-          - Cloud AI: **OFF**
-          - 외부 업무 자동 실행: **없음**
-          - Node.js 별도 설치: **불필요**
-          - 사용 방법: ZIP 압축 해제 후 루트의 `START_BETA.bat` 실행
-          - 상태: **Beta**
-          - 중요한 결과와 UNKNOWN 항목은 사용자가 직접 확인해야 합니다.
+          - Cloud AI: OFF
+          - 외부 업무 자동 실행: 없음
+          - Node.js 별도 설치: 불필요
+          - ZIP 압축 해제 후 START_BETA.bat 실행
+          - Beta 단계이며 중요한 결과는 사용자가 직접 확인해야 합니다.
 
-          Source SHA: `2b883faa14028075567d1738052a71b3048511c1`
+          Source SHA: 2b883faa14028075567d1738052a71b3048511c1
 
           SHA-256:
-
-          `a7106eb8a141a7af16c6084ee3424b7935b88c08a55428c7828679f6842973c6`
-
-          지원 범위와 개인정보 안내는 ZIP 내부 문서를 확인하세요.
+          a7106eb8a141a7af16c6084ee3424b7935b88c08a55428c7828679f6842973c6
           EOF
 
-      - name: Create or update public GitHub Release
+      - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-        shell: bash
         run: |
           set -euo pipefail
           tag="v0.1.0-beta.1"
-          title="BreakDown Beta 0.1.0 — Windows x64"
           if gh release view "$tag" >/dev/null 2>&1; then
             gh release upload "$tag" approved/BreakDown_BETA_001.zip approved/SHA256SUMS.txt --clobber
-            gh release edit "$tag" --title "$title" --notes-file release-notes.md
+            gh release edit "$tag" --title "BreakDown Beta 0.1.0 - Windows x64" --notes-file release-notes.md
           else
-            gh release create "$tag"               approved/BreakDown_BETA_001.zip               approved/SHA256SUMS.txt               --target main               --title "$title"               --notes-file release-notes.md
+            gh release create "$tag" approved/BreakDown_BETA_001.zip approved/SHA256SUMS.txt --target main --title "BreakDown Beta 0.1.0 - Windows x64" --notes-file release-notes.md
           fi
